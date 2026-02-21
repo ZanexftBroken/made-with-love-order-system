@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Made with Love - Order Form</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #050505;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: radial-gradient(circle at top left, #222 0%, #000 100%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 550px;
+        }
+
+        .glass-box {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .input-group { margin-bottom: 15px; }
+
+        label {
+            font-size: 13px;
+            color: #bbb;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            border-color: #fff;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .warning-text {
+            font-size: 12px;
+            color: #aaa;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-left: 3px solid #fff;
+            margin-top: 5px;
+            border-radius: 4px;
+            line-height: 1.5;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            transition: 0.3s;
+            margin-top: 15px;
+        }
+
+        .btn-primary { background: #ffffff; color: #000000; }
+        .btn-primary:hover:not(:disabled) { background: #cccccc; transform: translateY(-2px); }
+        .btn-primary:disabled { background: #555; color: #888; cursor: not-allowed; }
+
+        .btn-secondary { background: transparent; border: 1px solid #fff; color: #fff; }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); }
+
+        .hidden { display: none !important; }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .modal-content {
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .modal-data p {
+            margin: 8px 0;
+            border-bottom: 1px solid #333;
+            padding-bottom: 8px;
+            font-size: 14px;
+            color: #ddd; 
+        }
+        .modal-data strong { color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="glass-box">
+            <h2>📦 Made with Love</h2>
+            
+            <form id="orderForm">
+                <div class="input-group">
+                    <label>⛔ Sender Name (မှာယူသူအမည်)</label>
+                    <input type="text" id="senderName" required>
+                </div>
+                
+                <div class="input-group">
+                    <label>⛔ Sender Phone (ဖုန်းနံပါတ်)</label>
+                    <input type="tel" id="senderPhone" required>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid #333; margin: 20px 0;">
+
+                <div class="input-group">
+                    <label>⛔ Receiver Name (လက်ခံသူအမည်)</label>
+                    <input type="text" id="receiverName" required>
+                </div>
+
+                <div class="input-group">
+                    <label>⛔ Receiver Phone (ရှိလျှင်)</label>
+                    <input type="tel" id="receiverPhone">
+                </div>
+
+                <div class="input-group">
+                    <label>⛔ Full Address (Postal code မှ စ၍ အခန်းနံပါတ်အထိ)</label>
+                    <textarea id="address" rows="3" required></textarea>
+                    <div class="warning-text">
+                        ⚠️ လိပ်စာမှားခြင်း၊ အခန်းနံပါတ် မပြည့်စုံပါက လိုချင်သောနေ့တွင် မရောက်နိုင်ပါ။
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>⛔ Message on Cake/Flower (ရေးလိုသောစာ)</label>
+                    <input type="text" id="cardMessage">
+                </div>
+
+                <div class="input-group">
+                    <label>⛔ Delivery Date (လက်ခံနိုင်မည့်နေ့)</label>
+                    <input type="date" id="deliveryDate" required>
+                </div>
+
+                <div class="input-group">
+                    <label>⛔ Delivery Time (လက်ခံနိုင်မည့်အချိန်)</label>
+                    <select id="deliveryTime" required>
+                        <option value="">Select Time</option>
+                        <option value="8:00 AM - 12:00 PM">8:00 AM – 12:00 PM</option>
+                        <option value="2:00 PM - 4:00 PM">2:00 PM – 4:00 PM</option>
+                        <option value="4:00 PM - 6:00 PM">4:00 PM – 6:00 PM</option>
+                        <option value="6:00 PM - 8:00 PM">6:00 PM – 8:00 PM</option>
+                        <option value="7:00 PM - 9:00 PM">7:00 PM – 9:00 PM</option>
+                    </select>
+                    <div class="warning-text">
+                        ⚠️ ရာသီဥတု သို့မဟုတ် လမ်းပိတ်ဆို့မှုများကြောင့် ပို့ဆောင်မှု နှောင့်နှေးနိုင်ပါသည်။
+                    </div>
+                </div>
+
+                <div class="input-group" style="margin-top: 20px;">
+                    <label>📸 Upload Item Photo (ဘာပစ္စည်းမှာလဲ သိချင်လို့ပါ)</label>
+                    <input type="file" id="itemImage" accept="image/*" required style="padding: 10px; background: rgba(255,255,255,0.05);">
+                </div>
+
+                <button type="button" id="checkBtn" class="btn btn-secondary">🔍 Check Order (စစ်ဆေးရန်)</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="reviewModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3 style="margin-top: 0;">Review Your Order</h3>
+            <div id="modalBody" class="modal-data"></div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button id="confirmSubmit" class="btn btn-primary" style="margin: 0;">Confirm & Submit</button>
+                <button id="closeModal" class="btn btn-secondary" style="margin: 0;">Edit</button>
+            </div>
+        </div>
+    </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD6txNwU9zsYWeDjrSTf25k20ZgZA0CBGc",
+      authDomain: "made-with-love-by-me-2dee6.firebaseapp.com",
+      databaseURL: "https://made-with-love-by-me-2dee6-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "made-with-love-by-me-2dee6",
+      storageBucket: "made-with-love-by-me-2dee6.firebasestorage.app",
+      messagingSenderId: "100906722681",
+      appId: "1:100906722681:web:80dc4caec22a2dae91fba8",
+      measurementId: "G-H6EXJDKH3E"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Image Converter
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+            fileReader.onload = () => resolve(fileReader.result);
+            fileReader.onerror = (error) => reject(error);
+        });
+    };
+
+    const reviewModal = document.getElementById('reviewModal');
+
+    // CHECK BUTTON LOGIC
+    document.getElementById('checkBtn').addEventListener('click', () => {
+        const fileInput = document.getElementById('itemImage');
+        
+        // Ensure file exists to prevent "undefined" error
+        if (!fileInput.files || fileInput.files.length === 0) {
+            alert("⚠️ Please upload a photo of the item!");
+            return;
+        }
+        
+        const file = fileInput.files[0];
+        if (!file) {
+            alert("⚠️ File error. Please reselect the image.");
+            return;
+        }
+
+        const sName = document.getElementById('senderName').value;
+        const sPhone = document.getElementById('senderPhone').value;
+        const rName = document.getElementById('receiverName').value;
+        const addr = document.getElementById('address').value;
+        const date = document.getElementById('deliveryDate').value;
+        const time = document.getElementById('deliveryTime').value;
+
+        if(!sName || !sPhone || !rName || !addr || !date || !time) {
+            alert("⚠️ Please fill all required fields marked with ⛔");
+            return;
+        }
+
+        document.getElementById('modalBody').innerHTML = `
+            <p><strong>From:</strong> ${sName} (${sPhone})</p>
+            <p><strong>To:</strong> ${rName} (${document.getElementById('receiverPhone').value || 'N/A'})</p>
+            <p><strong>Address:</strong> ${addr}</p>
+            <p><strong>Message:</strong> ${document.getElementById('cardMessage').value || '-'}</p>
+            <p><strong>Delivery:</strong> ${date} | ${time}</p>
+            <p><strong>Photo:</strong> ${file.name}</p>
+        `;
+        
+        reviewModal.classList.remove('hidden');
+    });
+
+    document.getElementById('closeModal').addEventListener('click', () => {
+        reviewModal.classList.add('hidden');
+    });
+
+    // SUBMIT BUTTON LOGIC
+    document.getElementById('confirmSubmit').addEventListener('click', async () => {
+        const btn = document.getElementById('confirmSubmit');
+        const fileInput = document.getElementById('itemImage');
+        
+        // Double check file existence
+        if (!fileInput.files || fileInput.files.length === 0) {
+            alert("⚠️ Please upload a photo first!");
+            reviewModal.classList.add('hidden');
+            return;
+        }
+
+        const file = fileInput.files[0];
+
+        btn.innerText = "Submitting Order...";
+        btn.disabled = true;
+
+        try {
+            const base64Image = await convertToBase64(file);
+
+            const newOrderRef = push(ref(db, 'orders'));
+            await set(newOrderRef, {
+                senderName: document.getElementById('senderName').value,
+                senderPhone: document.getElementById('senderPhone').value,
+                receiverName: document.getElementById('receiverName').value,
+                receiverPhone: document.getElementById('receiverPhone').value,
+                address: document.getElementById('address').value,
+                cardMessage: document.getElementById('cardMessage').value,
+                deliveryDate: document.getElementById('deliveryDate').value,
+                deliveryTime: document.getElementById('deliveryTime').value,
+                imageUrl: base64Image, // Save to Realtime DB directly
+                status: "Pending",
+                timestamp: Date.now()
+            });
+
+            alert("✅ Order Submitted Successfully! Made with Love 🤍");
+            reviewModal.classList.add('hidden');
+            document.getElementById('orderForm').reset();
+
+        } catch (error) {
+            console.error(error);
+            alert("❌ Error: " + error.message);
+        } finally {
+            btn.innerText = "Confirm & Submit";
+            btn.disabled = false;
+        }
+    });
+</script>
+</body>
+</html>
