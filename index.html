@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Made with Love - Fast Order Form</title>
+    <title>Made with Love - Order Form</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -20,6 +20,7 @@
         .dark-card { background-color: var(--bg-card); border: 1px solid #2a2a2a; border-radius: 16px; padding: 25px; margin-bottom: 15px; }
         .form-control, .form-select { background-color: var(--bg-input); border: 1px solid #444; color: white; border-radius: 10px; padding: 12px; }
         .form-control:focus, .form-select:focus { background-color: #333; border-color: var(--accent-gold); color: white; box-shadow: 0 0 5px rgba(255, 215, 0, 0.3); }
+        .form-control::placeholder { color: #888; }
         .form-label { color: #aaa; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 6px; }
         .warning-text { font-size: 0.75rem; color: #ffb8b8; margin-top: 5px; }
         
@@ -29,9 +30,9 @@
         .btn-add-photo { border: 1px dashed #666; color: #aaa; background: transparent; padding: 10px; border-radius: 10px; width: 100%; text-align: center; cursor: pointer; transition: 0.3s;}
         .btn-add-photo:hover { border-color: #fff; color: #fff; background: rgba(255,255,255,0.05); }
 
-        #reviewOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; }
+        #reviewOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 15px;}
         #reviewOverlay.active { display: flex; }
-        .review-card { background: #111; border: 1px solid #333; border-radius: 20px; padding: 30px; width: 90%; max-width: 450px; }
+        .review-card { background: #111; border: 1px solid #333; border-radius: 20px; padding: 30px; width: 100%; max-width: 450px; }
         .review-data p { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #222; font-size: 0.9rem; color: #ccc;}
         .review-data strong { color: white; display: inline-block; width: 80px; }
     </style>
@@ -50,29 +51,33 @@
 </div>
 
 <div class="container py-4" style="max-width: 600px;">
-    <div class="mb-4 px-1"><h3 class="brand-title mb-0">Made with Love 🤍</h3><small class="text-secondary">PLACE YOUR ORDER</small></div>
+    <div class="mb-4 px-1">
+        <h3 class="brand-title mb-0">Made with Love 🤍</h3>
+        <small class="text-secondary">PLACE YOUR ORDER</small>
+    </div>
 
     <div class="dark-card">
         <form id="orderForm">
             <h6 class="text-warning mb-3 fw-bold border-bottom border-secondary pb-2">Sender Info</h6>
             <div class="row g-2 mb-3">
-                <div class="col-6"><label class="form-label">Name *</label><input type="text" class="form-control" id="senderName" required></div>
-                <div class="col-6"><label class="form-label">Phone *</label><input type="tel" class="form-control" id="senderPhone" required></div>
+                <div class="col-6"><label class="form-label">Name *</label><input type="text" class="form-control" id="senderName" required placeholder="Your Name"></div>
+                <div class="col-6"><label class="form-label">Phone *</label><input type="tel" class="form-control" id="senderPhone" required placeholder="09xxxxxxxxx"></div>
             </div>
 
             <h6 class="text-warning mb-3 fw-bold border-bottom border-secondary pb-2 mt-4">Receiver Info</h6>
             <div class="row g-2 mb-3">
-                <div class="col-6"><label class="form-label">Name *</label><input type="text" class="form-control" id="receiverName" required></div>
-                <div class="col-6"><label class="form-label">Phone</label><input type="tel" class="form-control" id="receiverPhone"></div>
+                <div class="col-6"><label class="form-label">Name *</label><input type="text" class="form-control" id="receiverName" required placeholder="Their Name"></div>
+                <div class="col-6"><label class="form-label">Phone</label><input type="tel" class="form-control" id="receiverPhone" placeholder="Optional"></div>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Full Address *</label>
-                <textarea class="form-control" id="address" rows="2" required></textarea>
+                <textarea class="form-control" id="address" rows="2" required placeholder="Room, Street, Township..."></textarea>
+                <div class="warning-text"><i class="bi bi-exclamation-triangle-fill"></i> Incomplete address may cause delivery delays.</div>
             </div>
 
             <h6 class="text-warning mb-3 fw-bold border-bottom border-secondary pb-2 mt-4">Order Details</h6>
-            <div class="mb-3"><label class="form-label">Message</label><input type="text" class="form-control" id="cardMessage"></div>
+            <div class="mb-3"><label class="form-label">Message</label><input type="text" class="form-control" id="cardMessage" placeholder="Happy Birthday! etc..."></div>
 
             <div class="row g-2 mb-3">
                 <div class="col-6"><label class="form-label">Date *</label><input type="date" class="form-control" id="deliveryDate" required></div>
@@ -91,7 +96,6 @@
 
             <div class="mb-4">
                 <label class="form-label">Upload Item Photos *</label>
-                
                 <div id="photoInputsContainer">
                     <input type="file" class="form-control item-photo mb-2" accept="image/*" required>
                     <input type="file" class="form-control item-photo mb-2" accept="image/*" required>
@@ -101,7 +105,7 @@
                 <div class="btn-add-photo" id="addPhotoBtn">
                     <i class="bi bi-plus-circle"></i> Upload another
                 </div>
-                <div class="warning-text">အနည်းဆုံး ပုံ (၃) ပုံ ထည့်ပေးရန် လိုအပ်ပါသည်။</div>
+                <div class="warning-text"><i class="bi bi-images"></i> A minimum of 3 photos is required.</div>
             </div>
 
             <button type="button" id="checkBtn" class="btn-outline-gold mt-2">REVIEW ORDER</button>
@@ -123,10 +127,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // ==========================================
-    // IMGBB MULTIPLE API KEYS CONFIGURATION
-    // ==========================================
-    // အစ်ကိုပေးထားတဲ့ API Key ၅ ခုလုံးကို ထည့်ထားပေးပါတယ်
     const IMGBB_API_KEYS = [
         "fca43303d3bb6971a4c61e422bf6ddd5",
         "c1190bd9ef92cce935c5e0d56b907e68",
@@ -135,10 +135,8 @@
         "eeef7e2a7c3324559471d3f2ddaea7c5"
     ];
 
-    // ပုံတစ်ပုံချင်းစီအတွက် Key တွေကို အလှည့်ကျ (Index) အတိုင်း ခွဲသုံးပါမယ်
     const uploadToImgBB = async (file, index) => {
-        const keyToUse = IMGBB_API_KEYS[index % IMGBB_API_KEYS.length]; // Key တွေကို အလှည့်ကျယူမယ်
-        
+        const keyToUse = IMGBB_API_KEYS[index % IMGBB_API_KEYS.length];
         const formData = new FormData();
         formData.append("image", file);
 
@@ -150,11 +148,10 @@
         if (data.success) {
             return data.data.url; 
         } else {
-            throw new Error(`ImgBB Upload Failed on Key ${index + 1}`);
+            throw new Error(`Upload Failed`);
         }
     };
 
-    // --- Dynamic "Upload Another" Button ---
     document.getElementById('addPhotoBtn').addEventListener('click', () => {
         const container = document.getElementById('photoInputsContainer');
         const input = document.createElement('input');
@@ -176,7 +173,7 @@
             }
         });
 
-        if (selectedFiles.length < 3) return alert("⚠️ ပုံ အနည်းဆုံး (၃) ပုံ ထည့်ပေးပါ။");
+        if (selectedFiles.length < 3) return alert("⚠️ Please select at least 3 photos.");
         if (!document.getElementById('orderForm').checkValidity()) return document.getElementById('orderForm').reportValidity();
 
         document.getElementById('modalBody').innerHTML = `
@@ -191,17 +188,14 @@
 
     window.closeReview = () => reviewOverlay.classList.remove('active');
 
-    // --- FAST UPLOAD LOGIC ---
     document.getElementById('confirmSubmitBtn').addEventListener('click', async () => {
         const btn = document.getElementById('confirmSubmitBtn');
-        btn.innerText = "UPLOADING FAST...";
+        btn.innerText = "UPLOADING...";
         btn.disabled = true;
 
         try {
-            // ပုံတွေကို API Key ခွဲပြီး တစ်ပြိုင်နက်တည်း အကုန်ပို့မယ် (Very Fast)
             const uploadedUrls = await Promise.all(selectedFiles.map((file, index) => uploadToImgBB(file, index)));
 
-            // Save text links to Firebase DB
             await set(push(ref(db, 'orders')), {
                 senderName: document.getElementById('senderName').value,
                 senderPhone: document.getElementById('senderPhone').value,
@@ -226,7 +220,7 @@
             `;
         } catch (error) { 
             console.error(error);
-            alert("❌ Error: Upload ချို့ယွင်းသွားပါသည်။ အင်တာနက်လိုင်း စစ်ဆေးပါ။"); 
+            alert("❌ Error: Upload failed. Please check your internet connection."); 
         } finally { 
             btn.innerText = "CONFIRM"; 
             btn.disabled = false; 
