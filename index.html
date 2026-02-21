@@ -2,370 +2,207 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Made with Love - Order & Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Made with Love - Fast Order Form</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
-        /* --- BLACK & WHITE LIQUID GLASS THEME --- */
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #050505;
-            color: #ffffff;
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-image: radial-gradient(circle at top left, #222 0%, #000 100%);
+        :root {
+            --bg-body: #050505; --bg-card: #141414; --bg-input: #222222;
+            --text-main: #ffffff; --text-secondary: #e0e0e0; 
+            --accent-gold: #FFD700; 
         }
-
-        .container, .dashboard-container {
-            width: 100%;
-            max-width: 600px;
-            margin-top: 20px;
-        }
-
-        .dashboard-container { max-width: 1000px; }
-
-        .glass-box {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
-        }
-
-        h2, h3 { text-align: center; margin-top: 0; font-weight: 600; letter-spacing: 1px; }
-
-        .input-group { margin-bottom: 15px; }
-
-        label { font-size: 13px; color: #bbb; margin-bottom: 5px; display: block; }
-
-        input, select, textarea {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 14px;
-            box-sizing: border-box;
-            outline: none;
-            transition: all 0.3s ease;
-        }
+        body { background-color: var(--bg-body); color: var(--text-main); font-family: 'Outfit', sans-serif; padding-bottom: 50px; }
+        .brand-title { color: white; font-weight: 800; letter-spacing: 1px; }
+        .dark-card { background-color: var(--bg-card); border: 1px solid #2a2a2a; border-radius: 16px; padding: 25px; margin-bottom: 15px; }
+        .form-control, .form-select { background-color: var(--bg-input); border: 1px solid #444; color: white; border-radius: 10px; padding: 12px; }
+        .form-control:focus, .form-select:focus { background-color: #333; border-color: var(--accent-gold); color: white; box-shadow: 0 0 5px rgba(255, 215, 0, 0.3); }
+        .form-label { color: #aaa; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 6px; }
+        .warning-text { font-size: 0.75rem; color: #ffb8b8; margin-top: 5px; }
         
-        input:focus, textarea:focus, select:focus {
-            border-color: #fff;
-            background: rgba(0, 0, 0, 0.7);
-        }
+        .btn-premium { background: linear-gradient(135deg, #FFD700 0%, #FDB931 100%); border: none; color: #000; font-weight: 700; border-radius: 12px; padding: 14px; width: 100%; transition: all 0.2s; }
+        .btn-premium:disabled { background: #555; color: #888; cursor: not-allowed; }
+        .btn-outline-gold { background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); font-weight: 600; border-radius: 12px; padding: 14px; width: 100%; }
+        .btn-add-photo { border: 1px dashed #666; color: #aaa; background: transparent; padding: 10px; border-radius: 10px; width: 100%; text-align: center; cursor: pointer; transition: 0.3s;}
+        .btn-add-photo:hover { border-color: #fff; color: #fff; background: rgba(255,255,255,0.05); }
 
-        .warning-text {
-            font-size: 12px; color: #aaa; background: rgba(255, 255, 255, 0.05);
-            padding: 10px; border-left: 3px solid #fff; margin-top: 5px; border-radius: 4px;
-        }
-
-        .btn {
-            width: 100%; padding: 14px; border-radius: 8px; border: none;
-            cursor: pointer; font-weight: 600; font-size: 15px; transition: 0.3s; margin-top: 10px;
-        }
-
-        .btn-primary { background: #ffffff; color: #000000; }
-        .btn-primary:hover:not(:disabled) { background: #cccccc; transform: translateY(-2px); }
-        .btn-primary:disabled { background: #555; color: #888; cursor: not-allowed; }
-
-        .btn-secondary { background: transparent; border: 1px solid #fff; color: #fff; }
-        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); }
-        
-        .btn-danger { background: rgba(255, 50, 50, 0.2); border: 1px solid #ff4444; color: #ff4444; }
-        .btn-danger:hover { background: #ff4444; color: white; }
-
-        .hidden { display: none !important; }
-
-        /* --- DASHBOARD STYLES --- */
-        .order-card {
-            background: rgba(20, 20, 20, 0.8);
-            border: 1px solid #333; padding: 20px; border-radius: 15px; margin-bottom: 20px;
-        }
-
-        .status-badge {
-            padding: 5px 12px; border-radius: 5px; font-size: 12px; font-weight: bold;
-            display: inline-block; margin-bottom: 10px;
-        }
-        .status-Pending { background: #ff9800; color: black; }
-        .status-Approved { background: #4CAF50; color: white; }
-
-        .image-gallery {
-            display: flex; gap: 10px; overflow-x: auto; margin-top: 15px; padding-bottom: 10px;
-        }
-        .admin-img-preview {
-            height: 120px; border-radius: 8px; border: 1px solid #555; object-fit: cover;
-        }
-
-        /* --- MODAL --- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
-            z-index: 1000; display: flex; justify-content: center; align-items: center;
-            padding: 20px; box-sizing: border-box; overflow-y: auto;
-        }
-        
-        .modal-content {
-            background: #111; border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 30px; border-radius: 15px; width: 100%; max-width: 450px; margin: auto;
-        }
-
-        .modal-data p { margin: 8px 0; border-bottom: 1px solid #333; padding-bottom: 8px; font-size: 14px; color: #ddd; }
-        .modal-data strong { color: white; }
-        
-        .switch-link {
-            text-align: center; margin-top: 20px; color: #888; cursor: pointer; text-decoration: underline; font-size: 14px;
-        }
-        .switch-link:hover { color: #fff; }
+        #reviewOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; }
+        #reviewOverlay.active { display: flex; }
+        .review-card { background: #111; border: 1px solid #333; border-radius: 20px; padding: 30px; width: 90%; max-width: 450px; }
+        .review-data p { margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid #222; font-size: 0.9rem; color: #ccc;}
+        .review-data strong { color: white; display: inline-block; width: 80px; }
     </style>
 </head>
 <body>
 
-    <div id="orderSection" class="container">
-        <div class="glass-box">
-            <h2>📦 Made with Love</h2>
-            
-            <form id="orderForm">
-                <div class="input-group">
-                    <label>⛔ Sender Name (မှာယူသူအမည်)</label>
-                    <input type="text" id="senderName" required>
-                </div>
-                <div class="input-group">
-                    <label>⛔ Sender Phone (ဖုန်းနံပါတ်)</label>
-                    <input type="tel" id="senderPhone" required>
-                </div>
+<div id="reviewOverlay">
+    <div class="review-card">
+        <h4 class="text-white mb-4 fw-bold text-center">REVIEW ORDER</h4>
+        <div id="modalBody" class="review-data"></div>
+        <div class="row g-2 mt-4">
+            <div class="col-6"><button class="btn btn-outline-secondary w-100 py-3 rounded-3" onclick="closeReview()">EDIT</button></div>
+            <div class="col-6"><button id="confirmSubmitBtn" class="btn-premium py-3">CONFIRM</button></div>
+        </div>
+    </div>
+</div>
 
-                <hr style="border: 0; border-top: 1px solid #333; margin: 20px 0;">
+<div class="container py-4" style="max-width: 600px;">
+    <div class="mb-4 px-1"><h3 class="brand-title mb-0">Made with Love 🤍</h3><small class="text-secondary">PLACE YOUR ORDER</small></div>
 
-                <div class="input-group">
-                    <label>⛔ Receiver Name (လက်ခံသူအမည်)</label>
-                    <input type="text" id="receiverName" required>
-                </div>
-                <div class="input-group">
-                    <label>⛔ Receiver Phone (ရှိလျှင်)</label>
-                    <input type="tel" id="receiverPhone">
-                </div>
-                <div class="input-group">
-                    <label>⛔ Full Address (Postal code မှ စ၍ အခန်းနံပါတ်အထိ)</label>
-                    <textarea id="address" rows="3" required></textarea>
-                </div>
-                <div class="input-group">
-                    <label>⛔ Message on Cake/Flower (ရေးလိုသောစာ)</label>
-                    <input type="text" id="cardMessage">
-                </div>
-                <div class="input-group">
-                    <label>⛔ Delivery Date (လက်ခံနိုင်မည့်နေ့)</label>
-                    <input type="date" id="deliveryDate" required>
-                </div>
-                <div class="input-group">
-                    <label>⛔ Delivery Time (လက်ခံနိုင်မည့်အချိန်)</label>
-                    <select id="deliveryTime" required>
-                        <option value="">Select Time</option>
-                        <option value="8:00 AM - 12:00 PM">8:00 AM – 12:00 PM</option>
-                        <option value="2:00 PM - 4:00 PM">2:00 PM – 4:00 PM</option>
-                        <option value="4:00 PM - 6:00 PM">4:00 PM – 6:00 PM</option>
-                        <option value="6:00 PM - 8:00 PM">6:00 PM – 8:00 PM</option>
-                        <option value="7:00 PM - 9:00 PM">7:00 PM – 9:00 PM</option>
+    <div class="dark-card">
+        <form id="orderForm">
+            <h6 class="text-warning mb-3 fw-bold border-bottom border-secondary pb-2">Sender Info</h6>
+            <div class="row g-2 mb-3">
+                <div class="col-6"><label class="form-label">Name *</label><input type="text" class="form-control" id="senderName" required></div>
+                <div class="col-6"><label class="form-label">Phone *</label><input type="tel" class="form-control" id="senderPhone" required></div>
+            </div>
+
+            <h6 class="text-warning mb-3 fw-bold border-bottom border-secondary pb-2 mt-4">Receiver Info</h6>
+            <div class="row g-2 mb-3">
+                <div class="col-6"><label class="form-label">Name *</label><input type="text" class="form-control" id="receiverName" required></div>
+                <div class="col-6"><label class="form-label">Phone</label><input type="tel" class="form-control" id="receiverPhone"></div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Full Address *</label>
+                <textarea class="form-control" id="address" rows="2" required></textarea>
+            </div>
+
+            <h6 class="text-warning mb-3 fw-bold border-bottom border-secondary pb-2 mt-4">Order Details</h6>
+            <div class="mb-3"><label class="form-label">Message</label><input type="text" class="form-control" id="cardMessage"></div>
+
+            <div class="row g-2 mb-3">
+                <div class="col-6"><label class="form-label">Date *</label><input type="date" class="form-control" id="deliveryDate" required></div>
+                <div class="col-6">
+                    <label class="form-label">Time *</label>
+                    <select class="form-select" id="deliveryTime" required>
+                        <option value="" selected disabled>Select Time</option>
+                        <option value="8:00 AM - 12:00 PM">8:00 AM - 12:00 PM</option>
+                        <option value="2:00 PM - 4:00 PM">2:00 PM - 4:00 PM</option>
+                        <option value="4:00 PM - 6:00 PM">4:00 PM - 6:00 PM</option>
+                        <option value="6:00 PM - 8:00 PM">6:00 PM - 8:00 PM</option>
+                        <option value="7:00 PM - 9:00 PM">7:00 PM - 9:00 PM</option>
                     </select>
                 </div>
-
-                <div class="input-group" style="margin-top: 20px;">
-                    <label>📸 Upload Item Photos (အနည်းဆုံး ၃ ပုံ ထည့်ပေးပါ)</label>
-                    <input type="file" id="itemImage" accept="image/*" multiple required style="padding: 10px; background: rgba(255,255,255,0.05);">
-                    <div class="warning-text">⚠️ အနည်းဆုံး ပုံ (၃) ပုံ ရွေးချယ်ပေးရန် လိုအပ်ပါသည်။</div>
-                </div>
-
-                <button type="button" id="checkBtn" class="btn btn-secondary">🔍 Check Order (စစ်ဆေးရန်)</button>
-            </form>
-        </div>
-        <div class="switch-link" id="goToDashboard">Switch to Admin Dashboard 🔒</div>
-    </div>
-
-    <div id="dashboardSection" class="dashboard-container hidden">
-        <div class="glass-box">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2 style="margin: 0;">🛡️ Order Dashboard</h2>
-                <button id="backToOrder" class="btn btn-secondary" style="width: auto; padding: 8px 15px; margin: 0;">Back</button>
             </div>
-            <hr style="border: 0; border-top: 1px solid #333; margin-bottom: 20px;">
-            
-            <div id="ordersList">
-                <p style="text-align: center; color: #888;">Loading Orders...</p>
-            </div>
-        </div>
-    </div>
 
-    <div id="reviewModal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <h3 style="margin-top: 0;">Review Your Order</h3>
-            <div id="modalBody" class="modal-data"></div>
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button id="confirmSubmit" class="btn btn-primary" style="margin: 0;">Confirm & Submit</button>
-                <button id="closeReviewModal" class="btn btn-secondary" style="margin: 0;">Edit</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="editModal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <h3 style="margin-top: 0;">✏️ Edit Order</h3>
-            <form id="editForm">
-                <input type="hidden" id="editOrderId">
-                <label>Sender Name</label>
-                <input type="text" id="editSenderName">
-                <label>Receiver Name</label>
-                <input type="text" id="editReceiverName">
-                <label>Address</label>
-                <textarea id="editAddress" rows="2"></textarea>
-                <label>Delivery Date</label>
-                <input type="date" id="editDate">
+            <div class="mb-4">
+                <label class="form-label">Upload Item Photos *</label>
                 
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button type="button" id="saveEditBtn" class="btn btn-primary" style="margin: 0;">Save Changes</button>
-                    <button type="button" id="closeEditModal" class="btn btn-danger" style="margin: 0;">Cancel</button>
+                <div id="photoInputsContainer">
+                    <input type="file" class="form-control item-photo mb-2" accept="image/*" required>
+                    <input type="file" class="form-control item-photo mb-2" accept="image/*" required>
+                    <input type="file" class="form-control item-photo mb-2" accept="image/*" required>
                 </div>
-            </form>
-        </div>
+                
+                <div class="btn-add-photo" id="addPhotoBtn">
+                    <i class="bi bi-plus-circle"></i> Upload another
+                </div>
+                <div class="warning-text">အနည်းဆုံး ပုံ (၃) ပုံ ထည့်ပေးရန် လိုအပ်ပါသည်။</div>
+            </div>
+
+            <button type="button" id="checkBtn" class="btn-outline-gold mt-2">REVIEW ORDER</button>
+        </form>
     </div>
+</div>
 
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-    import { getDatabase, ref, push, set, onValue, update } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyD6txNwU9zsYWeDjrSTf25k20ZgZA0CBGc",
       authDomain: "made-with-love-by-me-2dee6.firebaseapp.com",
       databaseURL: "https://made-with-love-by-me-2dee6-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "made-with-love-by-me-2dee6",
-      storageBucket: "made-with-love-by-me-2dee6.firebasestorage.app",
-      messagingSenderId: "100906722681",
-      appId: "1:100906722681:web:80dc4caec22a2dae91fba8"
+      projectId: "made-with-love-by-me-2dee6"
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // --- 🌟 IMAGE COMPRESSOR FUNCTION (NEW) 🌟 ---
-    // This reduces the image size before uploading so it doesn't hang.
-    const compressImage = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = (event) => {
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 800; // Resize width to 800px max
-                    let width = img.width;
-                    let height = img.height;
+    // ==========================================
+    // IMGBB MULTIPLE API KEYS CONFIGURATION
+    // ==========================================
+    // အစ်ကိုပေးထားတဲ့ API Key ၅ ခုလုံးကို ထည့်ထားပေးပါတယ်
+    const IMGBB_API_KEYS = [
+        "fca43303d3bb6971a4c61e422bf6ddd5",
+        "c1190bd9ef92cce935c5e0d56b907e68",
+        "5ceb148dc675b17f0284b24cfccacbf7",
+        "1875bfd9888c4eb58a5ac981e510cbbe",
+        "eeef7e2a7c3324559471d3f2ddaea7c5"
+    ];
 
-                    if (width > MAX_WIDTH) {
-                        height = Math.round((height * MAX_WIDTH) / width);
-                        width = MAX_WIDTH;
-                    }
+    // ပုံတစ်ပုံချင်းစီအတွက် Key တွေကို အလှည့်ကျ (Index) အတိုင်း ခွဲသုံးပါမယ်
+    const uploadToImgBB = async (file, index) => {
+        const keyToUse = IMGBB_API_KEYS[index % IMGBB_API_KEYS.length]; // Key တွေကို အလှည့်ကျယူမယ်
+        
+        const formData = new FormData();
+        formData.append("image", file);
 
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-
-                    // Compress to JPEG with 70% quality
-                    const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
-                    resolve(dataUrl);
-                };
-                img.onerror = (err) => reject(err);
-            };
-            reader.onerror = (err) => reject(err);
+        const response = await fetch(`https://api.imgbb.com/1/upload?key=${keyToUse}`, {
+            method: "POST",
+            body: formData
         });
+        const data = await response.json();
+        if (data.success) {
+            return data.data.url; 
+        } else {
+            throw new Error(`ImgBB Upload Failed on Key ${index + 1}`);
+        }
     };
 
-    // --- NAVIGATION ---
-    const orderSection = document.getElementById('orderSection');
-    const dashboardSection = document.getElementById('dashboardSection');
-
-    document.getElementById('goToDashboard').addEventListener('click', () => {
-        orderSection.classList.add('hidden');
-        dashboardSection.classList.remove('hidden');
-        loadAdminOrders();
+    // --- Dynamic "Upload Another" Button ---
+    document.getElementById('addPhotoBtn').addEventListener('click', () => {
+        const container = document.getElementById('photoInputsContainer');
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.className = 'form-control item-photo mb-2';
+        input.accept = 'image/*';
+        container.appendChild(input);
     });
 
-    document.getElementById('backToOrder').addEventListener('click', () => {
-        dashboardSection.classList.add('hidden');
-        orderSection.classList.remove('hidden');
-    });
-
-    // --- 1. USER: CHECK & SUBMIT ORDER ---
-    const reviewModal = document.getElementById('reviewModal');
+    const reviewOverlay = document.getElementById('reviewOverlay');
+    let selectedFiles = [];
 
     document.getElementById('checkBtn').addEventListener('click', () => {
-        const fileInput = document.getElementById('itemImage');
-        
-        if (!fileInput.files || fileInput.files.length < 3) {
-            alert("⚠️ ကျေးဇူးပြု၍ ပစ္စည်းပုံ အနည်းဆုံး (၃) ပုံ ရွေးချယ်ပေးပါ။ (Please select at least 3 images)");
-            return;
-        }
+        selectedFiles = [];
+        const inputs = document.querySelectorAll('.item-photo');
+        inputs.forEach(input => {
+            if (input.files.length > 0) {
+                selectedFiles.push(input.files[0]);
+            }
+        });
 
-        const sName = document.getElementById('senderName').value;
-        const sPhone = document.getElementById('senderPhone').value;
-        const rName = document.getElementById('receiverName').value;
-        const addr = document.getElementById('address').value;
-        const date = document.getElementById('deliveryDate').value;
-        const time = document.getElementById('deliveryTime').value;
-
-        if(!sName || !sPhone || !rName || !addr || !date || !time) {
-            alert("⚠️ Please fill all required fields!");
-            return;
-        }
+        if (selectedFiles.length < 3) return alert("⚠️ ပုံ အနည်းဆုံး (၃) ပုံ ထည့်ပေးပါ။");
+        if (!document.getElementById('orderForm').checkValidity()) return document.getElementById('orderForm').reportValidity();
 
         document.getElementById('modalBody').innerHTML = `
-            <p><strong>From:</strong> ${sName} (${sPhone})</p>
-            <p><strong>To:</strong> ${rName} (${document.getElementById('receiverPhone').value || '-'})</p>
-            <p><strong>Address:</strong> ${addr}</p>
-            <p><strong>Delivery:</strong> ${date} | ${time}</p>
-            <p><strong>Photos Selected:</strong> ${fileInput.files.length} images (Will be compressed for faster upload)</p>
+            <p><strong>From:</strong> ${document.getElementById('senderName').value}</p>
+            <p><strong>To:</strong> ${document.getElementById('receiverName').value}</p>
+            <p><strong>Address:</strong> ${document.getElementById('address').value}</p>
+            <p><strong>Delivery:</strong> ${document.getElementById('deliveryDate').value} @ ${document.getElementById('deliveryTime').value}</p>
+            <p><strong>Photos:</strong> <span class="text-success">${selectedFiles.length} images ready</span></p>
         `;
-        
-        reviewModal.classList.remove('hidden');
+        reviewOverlay.classList.add('active');
     });
 
-    document.getElementById('closeReviewModal').addEventListener('click', () => {
-        reviewModal.classList.add('hidden');
-    });
+    window.closeReview = () => reviewOverlay.classList.remove('active');
 
-    // Submitting Multiple Images with Compression
-    document.getElementById('confirmSubmit').addEventListener('click', async () => {
-        const btn = document.getElementById('confirmSubmit');
-        const fileInput = document.getElementById('itemImage');
-        const files = fileInput.files;
-
-        if (!files || files.length < 3) {
-            alert("Error: Images lost. Please reselect at least 3 images.");
-            reviewModal.classList.add('hidden');
-            return;
-        }
-
-        btn.innerText = "Compressing & Uploading... Please wait.";
+    // --- FAST UPLOAD LOGIC ---
+    document.getElementById('confirmSubmitBtn').addEventListener('click', async () => {
+        const btn = document.getElementById('confirmSubmitBtn');
+        btn.innerText = "UPLOADING FAST...";
         btn.disabled = true;
 
         try {
-            // Compress all selected files before uploading
-            let compressedImagesArray = [];
-            for(let i = 0; i < files.length; i++) {
-                let compressedBase64 = await compressImage(files[i]);
-                compressedImagesArray.push(compressedBase64);
-            }
+            // ပုံတွေကို API Key ခွဲပြီး တစ်ပြိုင်နက်တည်း အကုန်ပို့မယ် (Very Fast)
+            const uploadedUrls = await Promise.all(selectedFiles.map((file, index) => uploadToImgBB(file, index)));
 
-            const newOrderRef = push(ref(db, 'orders'));
-            await set(newOrderRef, {
+            // Save text links to Firebase DB
+            await set(push(ref(db, 'orders')), {
                 senderName: document.getElementById('senderName').value,
                 senderPhone: document.getElementById('senderPhone').value,
                 receiverName: document.getElementById('receiverName').value,
@@ -374,630 +211,27 @@
                 cardMessage: document.getElementById('cardMessage').value,
                 deliveryDate: document.getElementById('deliveryDate').value,
                 deliveryTime: document.getElementById('deliveryTime').value,
-                images: compressedImagesArray, // Save compressed images
+                images: uploadedUrls, 
                 status: "Pending",
                 timestamp: Date.now()
             });
 
-            alert("✅ Order Submitted Successfully! Made with Love 🤍");
-            reviewModal.classList.add('hidden');
+            alert("✅ Order Submitted Successfully!");
+            closeReview();
             document.getElementById('orderForm').reset();
-
-        } catch (error) {
+            document.getElementById('photoInputsContainer').innerHTML = `
+                <input type="file" class="form-control item-photo mb-2" accept="image/*" required>
+                <input type="file" class="form-control item-photo mb-2" accept="image/*" required>
+                <input type="file" class="form-control item-photo mb-2" accept="image/*" required>
+            `;
+        } catch (error) { 
             console.error(error);
-            alert("❌ Error: " + error.message);
-        } finally {
-            btn.innerText = "Confirm & Submit";
-            btn.disabled = false;
+            alert("❌ Error: Upload ချို့ယွင်းသွားပါသည်။ အင်တာနက်လိုင်း စစ်ဆေးပါ။"); 
+        } finally { 
+            btn.innerText = "CONFIRM"; 
+            btn.disabled = false; 
         }
     });
-
-    // --- 2. ADMIN: DASHBOARD, APPROVE & EDIT ---
-    function loadAdminOrders() {
-        const container = document.getElementById('ordersList');
-        onValue(ref(db, 'orders'), (snapshot) => {
-            container.innerHTML = "";
-            const data = snapshot.val();
-            
-            if (!data) {
-                container.innerHTML = "<p style='text-align:center; color:#888;'>No Orders Yet</p>";
-                return;
-            }
-
-            Object.entries(data).reverse().forEach(([key, order]) => {
-                const div = document.createElement('div');
-                div.className = "order-card";
-                
-                let approveBtn = order.status !== "Approved" 
-                    ? `<button class="btn btn-primary approve-btn" data-key="${key}" style="width:auto; padding:8px 15px; margin-right:10px;">✅ Approve</button>` 
-                    : ``;
-
-                let imagesHtml = '';
-                if(order.images && Array.isArray(order.images)) {
-                    order.images.forEach(img => {
-                        imagesHtml += `<a href="${img}" target="_blank"><img src="${img}" class="admin-img-preview"></a>`;
-                    });
-                }
-
-                div.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span class="status-badge status-${order.status}">${order.status}</span>
-                        <small style="color:#888;">${new Date(order.timestamp).toLocaleDateString()}</small>
-                    </div>
-                    <div style="font-size: 14px; line-height: 1.6; color: #ddd;">
-                        <strong>Sender:</strong> ${order.senderName} (${order.senderPhone}) <br>
-                        <strong>Receiver:</strong> ${order.receiverName} (${order.receiverPhone}) <br>
-                        <strong>Address:</strong> ${order.address} <br>
-                        <strong>Date/Time:</strong> ${order.deliveryDate} @ ${order.deliveryTime} <br>
-                        <strong>Note:</strong> ${order.cardMessage || '-'}
-                    </div>
-                    
-                    <div class="image-gallery">
-                        ${imagesHtml}
-                    </div>
-
-                    <div style="margin-top: 15px;">
-                        ${approveBtn}
-                        <button class="btn btn-secondary edit-btn" data-key="${key}" data-order='${JSON.stringify(order).replace(/'/g, "&apos;")}' style="width:auto; padding:8px 15px;">✏️ Edit</button>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-
-            document.querySelectorAll('.approve-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const key = e.target.getAttribute('data-key');
-                    update(ref(db, 'orders/' + key), { status: "Approved" });
-                });
-            });
-
-            document.querySelectorAll('.edit-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const key = e.target.getAttribute('data-key');
-                    const orderData = JSON.parse(e.target.getAttribute('data-order'));
-                    openEditModal(key, orderData);
-                });
-            });
-        });
-    }
-
-    // --- 3. EDIT LOGIC ---
-    const editModal = document.getElementById('editModal');
-
-    function openEditModal(key, order) {
-        document.getElementById('editOrderId').value = key;
-        document.getElementById('editSenderName').value = order.senderName;
-        document.getElementById('editReceiverName').value = order.receiverName;
-        document.getElementById('editAddress').value = order.address;
-        document.getElementById('editDate').value = order.deliveryDate;
-        editModal.classList.remove('hidden');
-    }
-
-    document.getElementById('closeEditModal').addEventListener('click', () => {
-        editModal.classList.add('hidden');
-    });
-
-    document.getElementById('saveEditBtn').addEventListener('click', () => {
-        const key = document.getElementById('editOrderId').value;
-        const updatedData = {
-            senderName: document.getElementById('editSenderName').value,
-            receiverName: document.getElementById('editReceiverName').value,
-            address: document.getElementById('editAddress').value,
-            deliveryDate: document.getElementById('editDate').value
-        };
-
-        update(ref(db, 'orders/' + key), updatedData).then(() => {
-            alert("Order Updated Successfully!");
-            editModal.classList.add('hidden');
-        }).catch(err => alert("Error updating: " + err.message));
-    });
-
-</script>
-</body>
-</html>
-rgin-top: 20px;
-        }
-
-        .dashboard-container {
-            width: 100%;
-            max-width: 1000px;
-            margin-top: 20px;
-        }
-
-        .glass-box {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
-        }
-
-        h2, h3 {
-            text-align: center;
-            margin-top: 0;
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
-
-        .input-group { margin-bottom: 15px; }
-
-        label {
-            font-size: 13px;
-            color: #bbb;
-            margin-bottom: 5px;
-            display: block;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 14px;
-            box-sizing: border-box;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-        
-        input:focus, textarea:focus, select:focus {
-            border-color: #fff;
-            background: rgba(0, 0, 0, 0.7);
-        }
-
-        .warning-text {
-            font-size: 12px;
-            color: #aaa;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 10px;
-            border-left: 3px solid #fff;
-            margin-top: 5px;
-            border-radius: 4px;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 14px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 15px;
-            transition: 0.3s;
-            margin-top: 10px;
-        }
-
-        .btn-primary { background: #ffffff; color: #000000; }
-        .btn-primary:hover:not(:disabled) { background: #cccccc; transform: translateY(-2px); }
-        .btn-primary:disabled { background: #555; color: #888; cursor: not-allowed; }
-
-        .btn-secondary { background: transparent; border: 1px solid #fff; color: #fff; }
-        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); }
-        
-        .btn-danger { background: rgba(255, 50, 50, 0.2); border: 1px solid #ff4444; color: #ff4444; }
-        .btn-danger:hover { background: #ff4444; color: white; }
-
-        .hidden { display: none !important; }
-
-        /* --- DASHBOARD STYLES --- */
-        .order-card {
-            background: rgba(20, 20, 20, 0.8);
-            border: 1px solid #333;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-        }
-
-        .status-badge {
-            padding: 5px 12px;
-            border-radius: 5px;
-            font-size: 12px;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 10px;
-        }
-        .status-Pending { background: #ff9800; color: black; }
-        .status-Approved { background: #4CAF50; color: white; }
-
-        .image-gallery {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            margin-top: 15px;
-            padding-bottom: 10px;
-        }
-        .admin-img-preview {
-            height: 120px;
-            border-radius: 8px;
-            border: 1px solid #555;
-            object-fit: cover;
-        }
-
-        /* --- MODAL --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
-            overflow-y: auto;
-        }
-        
-        .modal-content {
-            background: #111;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 30px;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 450px;
-            margin: auto;
-        }
-
-        .modal-data p {
-            margin: 8px 0; border-bottom: 1px solid #333; padding-bottom: 8px; font-size: 14px; color: #ddd; 
-        }
-        .modal-data strong { color: white; }
-        
-        .switch-link {
-            text-align: center; margin-top: 20px; color: #888; cursor: pointer; text-decoration: underline; font-size: 14px;
-        }
-        .switch-link:hover { color: #fff; }
-    </style>
-</head>
-<body>
-
-    <div id="orderSection" class="container">
-        <div class="glass-box">
-            <h2>📦 Made with Love</h2>
-            
-            <form id="orderForm">
-                <div class="input-group">
-                    <label>⛔ Sender Name (မှာယူသူအမည်)</label>
-                    <input type="text" id="senderName" required>
-                </div>
-                <div class="input-group">
-                    <label>⛔ Sender Phone (ဖုန်းနံပါတ်)</label>
-                    <input type="tel" id="senderPhone" required>
-                </div>
-
-                <hr style="border: 0; border-top: 1px solid #333; margin: 20px 0;">
-
-                <div class="input-group">
-                    <label>⛔ Receiver Name (လက်ခံသူအမည်)</label>
-                    <input type="text" id="receiverName" required>
-                </div>
-                <div class="input-group">
-                    <label>⛔ Receiver Phone (ရှိလျှင်)</label>
-                    <input type="tel" id="receiverPhone">
-                </div>
-                <div class="input-group">
-                    <label>⛔ Full Address (Postal code မှ စ၍ အခန်းနံပါတ်အထိ)</label>
-                    <textarea id="address" rows="3" required></textarea>
-                </div>
-                <div class="input-group">
-                    <label>⛔ Message on Cake/Flower (ရေးလိုသောစာ)</label>
-                    <input type="text" id="cardMessage">
-                </div>
-                <div class="input-group">
-                    <label>⛔ Delivery Date (လက်ခံနိုင်မည့်နေ့)</label>
-                    <input type="date" id="deliveryDate" required>
-                </div>
-                <div class="input-group">
-                    <label>⛔ Delivery Time (လက်ခံနိုင်မည့်အချိန်)</label>
-                    <select id="deliveryTime" required>
-                        <option value="">Select Time</option>
-                        <option value="8:00 AM - 12:00 PM">8:00 AM – 12:00 PM</option>
-                        <option value="2:00 PM - 4:00 PM">2:00 PM – 4:00 PM</option>
-                        <option value="4:00 PM - 6:00 PM">4:00 PM – 6:00 PM</option>
-                        <option value="6:00 PM - 8:00 PM">6:00 PM – 8:00 PM</option>
-                        <option value="7:00 PM - 9:00 PM">7:00 PM – 9:00 PM</option>
-                    </select>
-                </div>
-
-                <div class="input-group" style="margin-top: 20px;">
-                    <label>📸 Upload Item Photos (အနည်းဆုံး ၃ ပုံ ထည့်ပေးပါ)</label>
-                    <input type="file" id="itemImage" accept="image/*" multiple required style="padding: 10px; background: rgba(255,255,255,0.05);">
-                    <div class="warning-text">⚠️ အနည်းဆုံး ပုံ (၃) ပုံ ရွေးချယ်ပေးရန် လိုအပ်ပါသည်။</div>
-                </div>
-
-                <button type="button" id="checkBtn" class="btn btn-secondary">🔍 Check Order (စစ်ဆေးရန်)</button>
-            </form>
-        </div>
-        <div class="switch-link" id="goToDashboard">Switch to Admin Dashboard 🔒</div>
-    </div>
-
-    <div id="dashboardSection" class="dashboard-container hidden">
-        <div class="glass-box">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2 style="margin: 0;">🛡️ Order Dashboard</h2>
-                <button id="backToOrder" class="btn btn-secondary" style="width: auto; padding: 8px 15px; margin: 0;">Back</button>
-            </div>
-            <hr style="border: 0; border-top: 1px solid #333; margin-bottom: 20px;">
-            
-            <div id="ordersList">
-                <p style="text-align: center; color: #888;">Loading Orders...</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="reviewModal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <h3 style="margin-top: 0;">Review Your Order</h3>
-            <div id="modalBody" class="modal-data"></div>
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button id="confirmSubmit" class="btn btn-primary" style="margin: 0;">Confirm & Submit</button>
-                <button id="closeReviewModal" class="btn btn-secondary" style="margin: 0;">Edit</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="editModal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <h3 style="margin-top: 0;">✏️ Edit Order</h3>
-            <form id="editForm">
-                <input type="hidden" id="editOrderId">
-                <label>Sender Name</label>
-                <input type="text" id="editSenderName">
-                <label>Receiver Name</label>
-                <input type="text" id="editReceiverName">
-                <label>Address</label>
-                <textarea id="editAddress" rows="2"></textarea>
-                <label>Delivery Date</label>
-                <input type="date" id="editDate">
-                
-                <div style="display: flex; gap: 10px; margin-top: 20px;">
-                    <button type="button" id="saveEditBtn" class="btn btn-primary" style="margin: 0;">Save Changes</button>
-                    <button type="button" id="closeEditModal" class="btn btn-danger" style="margin: 0;">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-    import { getDatabase, ref, push, set, onValue, update } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyD6txNwU9zsYWeDjrSTf25k20ZgZA0CBGc",
-      authDomain: "made-with-love-by-me-2dee6.firebaseapp.com",
-      databaseURL: "https://made-with-love-by-me-2dee6-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "made-with-love-by-me-2dee6",
-      storageBucket: "made-with-love-by-me-2dee6.firebasestorage.app",
-      messagingSenderId: "100906722681",
-      appId: "1:100906722681:web:80dc4caec22a2dae91fba8"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-
-    // Image Converter
-    const convertToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(file);
-            fileReader.onload = () => resolve(fileReader.result);
-            fileReader.onerror = (error) => reject(error);
-        });
-    };
-
-    // --- NAVIGATION ---
-    const orderSection = document.getElementById('orderSection');
-    const dashboardSection = document.getElementById('dashboardSection');
-
-    document.getElementById('goToDashboard').addEventListener('click', () => {
-        orderSection.classList.add('hidden');
-        dashboardSection.classList.remove('hidden');
-        loadAdminOrders();
-    });
-
-    document.getElementById('backToOrder').addEventListener('click', () => {
-        dashboardSection.classList.add('hidden');
-        orderSection.classList.remove('hidden');
-    });
-
-
-    // --- 1. USER: CHECK & SUBMIT ORDER ---
-    const reviewModal = document.getElementById('reviewModal');
-
-    document.getElementById('checkBtn').addEventListener('click', () => {
-        const fileInput = document.getElementById('itemImage');
-        
-        // Validation for AT LEAST 3 IMAGES
-        if (!fileInput.files || fileInput.files.length < 3) {
-            alert("⚠️ ကျေးဇူးပြု၍ ပစ္စည်းပုံ အနည်းဆုံး (၃) ပုံ ရွေးချယ်ပေးပါ။ (Please select at least 3 images)");
-            return;
-        }
-
-        const sName = document.getElementById('senderName').value;
-        const sPhone = document.getElementById('senderPhone').value;
-        const rName = document.getElementById('receiverName').value;
-        const addr = document.getElementById('address').value;
-        const date = document.getElementById('deliveryDate').value;
-        const time = document.getElementById('deliveryTime').value;
-
-        if(!sName || !sPhone || !rName || !addr || !date || !time) {
-            alert("⚠️ Please fill all required fields!");
-            return;
-        }
-
-        document.getElementById('modalBody').innerHTML = `
-            <p><strong>From:</strong> ${sName} (${sPhone})</p>
-            <p><strong>To:</strong> ${rName} (${document.getElementById('receiverPhone').value || '-'})</p>
-            <p><strong>Address:</strong> ${addr}</p>
-            <p><strong>Delivery:</strong> ${date} | ${time}</p>
-            <p><strong>Photos Selected:</strong> ${fileInput.files.length} images</p>
-        `;
-        
-        reviewModal.classList.remove('hidden');
-    });
-
-    document.getElementById('closeReviewModal').addEventListener('click', () => {
-        reviewModal.classList.add('hidden');
-    });
-
-    // Submitting Multiple Images
-    document.getElementById('confirmSubmit').addEventListener('click', async () => {
-        const btn = document.getElementById('confirmSubmit');
-        const fileInput = document.getElementById('itemImage');
-        const files = fileInput.files;
-
-        if (!files || files.length < 3) {
-            alert("Error: Images lost. Please reselect at least 3 images.");
-            reviewModal.classList.add('hidden');
-            return;
-        }
-
-        btn.innerText = "Uploading Photos... Please wait.";
-        btn.disabled = true;
-
-        try {
-            // Loop through all selected files and convert to Base64
-            let base64ImagesArray = [];
-            for(let i = 0; i < files.length; i++) {
-                let b64 = await convertToBase64(files[i]);
-                base64ImagesArray.push(b64);
-            }
-
-            const newOrderRef = push(ref(db, 'orders'));
-            await set(newOrderRef, {
-                senderName: document.getElementById('senderName').value,
-                senderPhone: document.getElementById('senderPhone').value,
-                receiverName: document.getElementById('receiverName').value,
-                receiverPhone: document.getElementById('receiverPhone').value,
-                address: document.getElementById('address').value,
-                cardMessage: document.getElementById('cardMessage').value,
-                deliveryDate: document.getElementById('deliveryDate').value,
-                deliveryTime: document.getElementById('deliveryTime').value,
-                images: base64ImagesArray, // Saved as an Array
-                status: "Pending",
-                timestamp: Date.now()
-            });
-
-            alert("✅ Order Submitted Successfully! Made with Love 🤍");
-            reviewModal.classList.add('hidden');
-            document.getElementById('orderForm').reset();
-
-        } catch (error) {
-            console.error(error);
-            alert("❌ Error: " + error.message);
-        } finally {
-            btn.innerText = "Confirm & Submit";
-            btn.disabled = false;
-        }
-    });
-
-
-    // --- 2. ADMIN: DASHBOARD, APPROVE & EDIT ---
-    function loadAdminOrders() {
-        const container = document.getElementById('ordersList');
-        onValue(ref(db, 'orders'), (snapshot) => {
-            container.innerHTML = "";
-            const data = snapshot.val();
-            
-            if (!data) {
-                container.innerHTML = "<p style='text-align:center; color:#888;'>No Orders Yet</p>";
-                return;
-            }
-
-            Object.entries(data).reverse().forEach(([key, order]) => {
-                const div = document.createElement('div');
-                div.className = "order-card";
-                
-                // Approve Button Logic
-                let approveBtn = order.status !== "Approved" 
-                    ? `<button class="btn btn-primary approve-btn" data-key="${key}" style="width:auto; padding:8px 15px; margin-right:10px;">✅ Approve</button>` 
-                    : ``;
-
-                // Images Gallery Logic
-                let imagesHtml = '';
-                if(order.images && Array.isArray(order.images)) {
-                    order.images.forEach(img => {
-                        imagesHtml += `<img src="${img}" class="admin-img-preview">`;
-                    });
-                }
-
-                div.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span class="status-badge status-${order.status}">${order.status}</span>
-                        <small style="color:#888;">${new Date(order.timestamp).toLocaleDateString()}</small>
-                    </div>
-                    <div style="font-size: 14px; line-height: 1.6; color: #ddd;">
-                        <strong>Sender:</strong> ${order.senderName} (${order.senderPhone}) <br>
-                        <strong>Receiver:</strong> ${order.receiverName} (${order.receiverPhone}) <br>
-                        <strong>Address:</strong> ${order.address} <br>
-                        <strong>Date/Time:</strong> ${order.deliveryDate} @ ${order.deliveryTime} <br>
-                        <strong>Note:</strong> ${order.cardMessage || '-'}
-                    </div>
-                    
-                    <div class="image-gallery">
-                        ${imagesHtml}
-                    </div>
-
-                    <div style="margin-top: 15px;">
-                        ${approveBtn}
-                        <button class="btn btn-secondary edit-btn" data-key="${key}" data-order='${JSON.stringify(order).replace(/'/g, "&apos;")}' style="width:auto; padding:8px 15px;">✏️ Edit</button>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-
-            // Add Event Listeners to generated buttons
-            document.querySelectorAll('.approve-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const key = e.target.getAttribute('data-key');
-                    update(ref(db, 'orders/' + key), { status: "Approved" });
-                });
-            });
-
-            document.querySelectorAll('.edit-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const key = e.target.getAttribute('data-key');
-                    const orderData = JSON.parse(e.target.getAttribute('data-order'));
-                    openEditModal(key, orderData);
-                });
-            });
-        });
-    }
-
-    // --- 3. EDIT LOGIC ---
-    const editModal = document.getElementById('editModal');
-
-    function openEditModal(key, order) {
-        document.getElementById('editOrderId').value = key;
-        document.getElementById('editSenderName').value = order.senderName;
-        document.getElementById('editReceiverName').value = order.receiverName;
-        document.getElementById('editAddress').value = order.address;
-        document.getElementById('editDate').value = order.deliveryDate;
-        editModal.classList.remove('hidden');
-    }
-
-    document.getElementById('closeEditModal').addEventListener('click', () => {
-        editModal.classList.add('hidden');
-    });
-
-    document.getElementById('saveEditBtn').addEventListener('click', () => {
-        const key = document.getElementById('editOrderId').value;
-        const updatedData = {
-            senderName: document.getElementById('editSenderName').value,
-            receiverName: document.getElementById('editReceiverName').value,
-            address: document.getElementById('editAddress').value,
-            deliveryDate: document.getElementById('editDate').value
-        };
-
-        update(ref(db, 'orders/' + key), updatedData).then(() => {
-            alert("Order Updated Successfully!");
-            editModal.classList.add('hidden');
-        }).catch(err => alert("Error updating: " + err.message));
-    });
-
 </script>
 </body>
 </html>
